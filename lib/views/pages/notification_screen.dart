@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/controllers/controller.dart';
-import 'package:my_todo/views/widgets/theme.dart';
+
+import '../../controllers/controller.dart';
+import '../../models/themes.dart';
 
 class NotificationScreen extends StatelessWidget {
   final controller = Get.put(HomeController());
