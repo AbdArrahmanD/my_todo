@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_todo/views/widgets/input_field.dart';
 
 import '../../controllers/theme_controller.dart';
 import '../widgets/button.dart';
@@ -21,9 +22,18 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: MyButton(
-          label: 'Add Task',
-          onTap: () {},
+        child: Column(
+          children: [
+            MyButton(
+              label: 'Add Task',
+              onTap: () {},
+            ),
+            InputField(
+              title: 'Title',
+              hint: 'Enter Title Here.',
+              widget: const Icon(Icons.calendar_today_outlined),
+            )
+          ],
         ),
       ),
     );
