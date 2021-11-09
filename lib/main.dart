@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_todo/views/pages/add_task_screen.dart';
 
 import 'controllers/theme_controller.dart';
 import 'models/themes.dart';
-import 'views/pages/home_page.dart';
+import 'views/pages/home_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeController().theme,
       title: 'ToDo',
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const AddTaskScreen(),
     );
   }
 }

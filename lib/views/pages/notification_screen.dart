@@ -5,15 +5,15 @@ import '../../controllers/controller.dart';
 import '../../models/themes.dart';
 
 class NotificationScreen extends StatelessWidget {
-  final controller = Get.put(HomeController());
+  final String payLoad;
 
-  NotificationScreen({Key? key}) : super(key: key);
+  const NotificationScreen({Key? key, required this.payLoad}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     AppBar appbar = AppBar(
       centerTitle: true,
-      title: Text(controller.payLoad.value.split('|')[0]),
+      title: Text(payLoad.split('|')[0]),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () => Get.back(),
@@ -95,7 +95,7 @@ class NotificationScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            controller.payLoad.value.split('|')[1],
+                            payLoad.split('|')[1],
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.white),
                             textAlign: TextAlign.justify,
@@ -122,7 +122,7 @@ class NotificationScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          controller.payLoad.value.split('|')[2],
+                          payLoad.split('|')[2],
                           style: const TextStyle(
                               fontSize: 30, color: Colors.white),
                         ),

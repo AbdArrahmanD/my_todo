@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/models/themes.dart';
+import '../../models/themes.dart';
 
 class InputField extends StatelessWidget {
-  InputField({
-    Key? key,
-    required this.title,
-    required this.hint,
-    this.widget,
-  }) : super(key: key);
+  const InputField(
+      {Key? key,
+      required this.title,
+      required this.hint,
+      this.widget,
+      this.controller})
+      : super(key: key);
 
   final String title;
   final String hint;
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController? controller;
   final Widget? widget;
 
   @override
@@ -32,7 +33,7 @@ class InputField extends StatelessWidget {
                   color: Get.isDarkMode ? Colors.white : Colors.black,
                 )),
             margin: const EdgeInsets.only(top: 5),
-            padding: const EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
                 Expanded(
