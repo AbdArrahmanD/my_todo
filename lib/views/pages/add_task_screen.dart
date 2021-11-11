@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_todo/controllers/theme_controller.dart';
 import 'package:my_todo/models/themes.dart';
@@ -56,7 +55,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               children: [
                 Text(
                   'Add Task',
-                  style: subTitleStyle,
+                  style: headingStyle,
                 ),
                 InputField(
                   title: 'Title',

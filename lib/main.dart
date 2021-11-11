@@ -4,7 +4,6 @@ import 'package:my_todo/views/pages/add_task_screen.dart';
 
 import 'controllers/theme_controller.dart';
 import 'models/themes.dart';
-import 'views/pages/home_screen.dart';
 
 void main() => runApp(const MyApp());
 
