@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_todo/controllers/theme_controller.dart';
 import 'package:my_todo/models/themes.dart';
+import 'package:my_todo/views/widgets/button.dart';
 import 'package:my_todo/views/widgets/input_field.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -31,6 +32,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   String selectedRepeat = 'None';
 
   List<String> repeatList = ['None', 'Daily', 'Weekly', 'Monthly'];
+
+  int selectedColor = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +158,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       },
                       underline: Container(height: 0),
                     )),
+                colorPicker()
               ],
             ),
           ),
@@ -162,4 +166,44 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       ),
     );
   }
+
+  Widget colorPicker() => Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                Text('Choose Color', style: titleStyle),
+                Row(
+                  children: List.generate(
+                      3,
+                      (index) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedColor = index;
+                                });
+                              },
+                              child: CircleAvatar(
+                                child: selectedColor == index
+                                    ? const Icon(Icons.done)
+                                    : null,
+                                backgroundColor: index == 0
+                                    ? primaryClr
+                                    : index == 1
+                                        ? pinkClr
+                                        : orangeClr,
+                              ),
+                            ),
+                          )),
+                ),
+              ],
+            ),
+            MyButton(label: 'Add Task', onTap: () {})
+          ],
+        ),
+      );
 }
