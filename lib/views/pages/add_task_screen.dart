@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_todo/controllers/theme_controller.dart';
+import 'package:my_todo/main.dart';
 import 'package:my_todo/models/themes.dart';
 import 'package:my_todo/views/widgets/button.dart';
 import 'package:my_todo/views/widgets/input_field.dart';
@@ -38,15 +39,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.change_circle),
-          onPressed: () {
-            ThemeController().switchThemeMode();
-            print(Get.isDarkMode);
-          },
-        ),
-      ),
+      appBar: appBar(1, title: 'Add Task'),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -56,10 +49,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text(
-                  'Add Task',
-                  style: headingStyle,
-                ),
                 InputField(
                   title: 'Title',
                   hint: 'Add Title here',
@@ -202,7 +191,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),
               ],
             ),
-            MyButton(label: 'Add Task', onTap: () {})
+            MyButton(
+                label: 'Add Task',
+                onTap: () {
+                  Get.back();
+                })
           ],
         ),
       );

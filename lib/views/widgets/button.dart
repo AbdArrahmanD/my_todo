@@ -25,6 +25,7 @@ class MyButton extends StatelessWidget {
         child: Text(
           label,
           style: const TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
         ),
       ),
     );
