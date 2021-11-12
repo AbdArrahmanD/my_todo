@@ -16,7 +16,7 @@ HomeController controller = Get.put(HomeController());
 class Themes {
   static final light = ThemeData(
     primaryColor: primaryClr,
-    backgroundColor: primaryClr,
+    backgroundColor: Colors.white,
     brightness: Brightness.light,
   );
 

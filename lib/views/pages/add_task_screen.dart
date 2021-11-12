@@ -39,7 +39,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyApp().appBar(1, title: 'Add Task'),
+      appBar: MyApp().appBar(0, title: 'Add Task'),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(
