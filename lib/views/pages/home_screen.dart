@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/main.dart';
-import 'package:my_todo/views/pages/add_task_screen.dart';
-import 'package:my_todo/views/widgets/input_field.dart';
 
-import '../../controllers/theme_controller.dart';
+import '../../main.dart';
 import '../widgets/button.dart';
+import '../widgets/input_field.dart';
+import 'add_task_screen.dart';
 import 'notification_screen.dart';
 
 class HomeScreen extends StatelessWidget {

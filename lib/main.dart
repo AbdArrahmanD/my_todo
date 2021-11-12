@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/views/pages/home_screen.dart';
 
 import 'controllers/theme_controller.dart';
 import 'models/themes.dart';
+import 'views/pages/home_screen.dart';
 
 void main() => runApp(const MyApp());
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:my_todo/controllers/theme_controller.dart';
-import 'package:my_todo/main.dart';
-import 'package:my_todo/models/themes.dart';
-import 'package:my_todo/views/widgets/button.dart';
-import 'package:my_todo/views/widgets/input_field.dart';
+
+import '../../main.dart';
+import '../../models/themes.dart';
+import '../widgets/button.dart';
+import '../widgets/input_field.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({Key? key}) : super(key: key);
