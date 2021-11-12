@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/controller.dart';
 import '../../models/themes.dart';
 
 class NotificationScreen extends StatelessWidget {

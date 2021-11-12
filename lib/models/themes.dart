@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_todo/controllers/controller.dart';
 
 const Color bluishClr = Color(0xFF4e5ae8);
 const Color orangeClr = Color(0xCFFF8746);
@@ -9,6 +10,8 @@ const Color white = Colors.white;
 const primaryClr = bluishClr;
 const Color darkGreyClr = Color(0xFF121212);
 const Color darkHeaderClr = Color(0xFF424242);
+
+HomeController controller = Get.put(HomeController());
 
 class Themes {
   static final light = ThemeData(
@@ -29,7 +32,9 @@ TextStyle get headingStyle {
     textStyle: TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.bold,
-      color: Get.isDarkMode ? Colors.white : Colors.black,
+      color: controller.theme.value == ThemeMode.dark
+          ? Colors.white
+          : Colors.black,
     ),
   );
 }
@@ -39,7 +44,9 @@ TextStyle get subHeadingStyle {
     textStyle: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
-      color: Get.isDarkMode ? Colors.white : Colors.black,
+      color: controller.theme.value == ThemeMode.dark
+          ? Colors.white
+          : Colors.black,
     ),
   );
 }
@@ -49,7 +56,9 @@ TextStyle get titleStyle {
     textStyle: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: Get.isDarkMode ? Colors.white : Colors.black,
+      color: controller.theme.value == ThemeMode.dark
+          ? Colors.white
+          : Colors.black,
     ),
   );
 }
@@ -59,7 +68,9 @@ TextStyle get subTitleStyle {
     textStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      color: Get.isDarkMode ? Colors.white : Colors.black,
+      color: controller.theme.value == ThemeMode.dark
+          ? Colors.white
+          : Colors.black,
     ),
   );
 }
@@ -69,7 +80,9 @@ TextStyle get bodyStyle {
     textStyle: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      color: Get.isDarkMode ? Colors.white : Colors.black,
+      color: controller.theme.value == ThemeMode.dark
+          ? Colors.white
+          : Colors.black,
     ),
   );
 }
@@ -79,7 +92,9 @@ TextStyle get bodyStyle2 {
     textStyle: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      color: Get.isDarkMode ? Colors.grey[200] : Colors.black,
+      color: controller.theme.value == ThemeMode.dark
+          ? Colors.grey[200]
+          : Colors.black,
     ),
   );
 }
