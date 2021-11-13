@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: MyApp().appBar(context, 0, title: 'ToDo'),
+      appBar: MyApp().appBar(context, 0, title: 'To Do'),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/controllers/controller.dart';
+import 'package:my_todo/controllers/theme_controller.dart';
 import '../../models/themes.dart';
 
-HomeController homeController = Get.put(HomeController());
+ThemeController homeController = Get.put(ThemeController());
 
 class InputField extends StatelessWidget {
   const InputField(

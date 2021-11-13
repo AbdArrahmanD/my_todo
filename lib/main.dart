@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/controllers/controller.dart';
+import 'package:my_todo/controllers/theme_controller.dart';
 
-import 'controllers/theme_controller.dart';
+import 'controllers/theme_servieses.dart';
 import 'models/themes.dart';
 import 'views/pages/home_screen.dart';
 
@@ -10,7 +10,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  final HomeController controller = Get.put(HomeController());
+  final ThemeController controller = Get.put(ThemeController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
                 ),
           onPressed: () {
             if (n == 0) {
-              ThemeController().switchThemeMode();
+              ThemeServieses().switchThemeMode();
             } else {
               Get.back();
             }
