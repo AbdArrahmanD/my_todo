@@ -27,10 +27,11 @@ class Themes {
   );
 }
 
-TextStyle headingStyle({Color? color, double? size}) => GoogleFonts.lato(
+TextStyle headingStyle({Color? color, double? size, FontWeight? fontWeight}) =>
+    GoogleFonts.lato(
       textStyle: TextStyle(
         fontSize: size ?? 24,
-        fontWeight: FontWeight.bold,
+        fontWeight: fontWeight ?? FontWeight.bold,
         // ignore: prefer_if_null_operators
         color: color != null
             ? color
@@ -40,10 +41,12 @@ TextStyle headingStyle({Color? color, double? size}) => GoogleFonts.lato(
       ),
     );
 
-TextStyle subHeadingStyle({Color? color, double? size}) => GoogleFonts.lato(
+TextStyle subHeadingStyle(
+        {Color? color, double? size, FontWeight? fontWeight}) =>
+    GoogleFonts.lato(
       textStyle: TextStyle(
         fontSize: size ?? 20,
-        fontWeight: FontWeight.bold,
+        fontWeight: fontWeight ?? FontWeight.bold,
         // ignore: prefer_if_null_operators
         color: color != null
             ? color
@@ -53,10 +56,11 @@ TextStyle subHeadingStyle({Color? color, double? size}) => GoogleFonts.lato(
       ),
     );
 
-TextStyle titleStyle({Color? color, double? size}) => GoogleFonts.lato(
+TextStyle titleStyle({Color? color, double? size, FontWeight? fontWeight}) =>
+    GoogleFonts.lato(
       textStyle: TextStyle(
         fontSize: size ?? 18,
-        fontWeight: FontWeight.bold,
+        fontWeight: fontWeight ?? FontWeight.bold,
         // ignore: prefer_if_null_operators
         color: color != null
             ? color
@@ -66,10 +70,11 @@ TextStyle titleStyle({Color? color, double? size}) => GoogleFonts.lato(
       ),
     );
 
-TextStyle subTitleStyle({Color? color, double? size}) => GoogleFonts.lato(
+TextStyle subTitleStyle({Color? color, double? size, FontWeight? fontWeight}) =>
+    GoogleFonts.lato(
       textStyle: TextStyle(
         fontSize: size ?? 16,
-        fontWeight: FontWeight.bold,
+        fontWeight: fontWeight ?? FontWeight.bold,
         // ignore: prefer_if_null_operators
         color: color != null
             ? color
@@ -79,10 +84,11 @@ TextStyle subTitleStyle({Color? color, double? size}) => GoogleFonts.lato(
       ),
     );
 
-TextStyle bodyStyle({Color? color, double? size}) => GoogleFonts.lato(
+TextStyle bodyStyle({Color? color, double? size, FontWeight? fontWeight}) =>
+    GoogleFonts.lato(
       textStyle: TextStyle(
         fontSize: size ?? 14,
-        fontWeight: FontWeight.bold,
+        fontWeight: fontWeight ?? FontWeight.bold,
         // ignore: prefer_if_null_operators
         color: color != null
             ? color
@@ -92,10 +98,11 @@ TextStyle bodyStyle({Color? color, double? size}) => GoogleFonts.lato(
       ),
     );
 
-TextStyle bodyStyle2({Color? color, double? size}) => GoogleFonts.lato(
+TextStyle bodyStyle2({Color? color, double? size, FontWeight? fontWeight}) =>
+    GoogleFonts.lato(
       textStyle: TextStyle(
         fontSize: size ?? 14,
-        fontWeight: FontWeight.bold,
+        fontWeight: fontWeight ?? FontWeight.bold,
         // ignore: prefer_if_null_operators
         color: color != null
             ? color

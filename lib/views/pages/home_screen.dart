@@ -69,9 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
           selectionColor: primaryClr,
           selectedTextColor: Colors.white,
           initialSelectedDate: DateTime.now(),
-          dateTextStyle: subHeadingStyle(size: 24, color: Colors.grey),
-          dayTextStyle: subHeadingStyle(size: 16, color: Colors.grey),
-          monthTextStyle: subHeadingStyle(size: 12, color: Colors.grey),
+          dateTextStyle: subHeadingStyle(
+              size: 24, color: Colors.grey, fontWeight: FontWeight.w600),
+          dayTextStyle: subHeadingStyle(
+              size: 16, color: Colors.grey, fontWeight: FontWeight.w600),
+          monthTextStyle: subHeadingStyle(
+              size: 12, color: Colors.grey, fontWeight: FontWeight.w600),
           onDateChange: (newDate) {
             setState(() {
               selecedDate = newDate;
