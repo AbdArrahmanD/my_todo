@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/controllers/theme_servieses.dart';
+import 'package:my_todo/models/theme_servieses.dart';
 
 class ThemeController extends GetxController {
   Rx<ThemeMode> theme =

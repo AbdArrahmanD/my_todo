@@ -112,7 +112,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       elevation: 4,
                       borderRadius: BorderRadius.circular(10),
                       dropdownColor: Colors.blueGrey,
-                      style: subTitleStyle,
+                      style: subTitleStyle(),
                       onChanged: (newVal) {
                         setState(() {
                           selectedRemind = newVal as int;
@@ -139,7 +139,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       elevation: 4,
                       borderRadius: BorderRadius.circular(10),
                       dropdownColor: Colors.blueGrey,
-                      style: subTitleStyle,
+                      style: subTitleStyle(),
                       onChanged: (newVal) {
                         setState(() {
                           selectedRepeat = newVal as String;
@@ -164,7 +164,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           children: [
             Column(
               children: [
-                Text('Choose Color', style: titleStyle),
+                Text('Choose Color', style: titleStyle()),
                 Row(
                   children: List.generate(
                       3,

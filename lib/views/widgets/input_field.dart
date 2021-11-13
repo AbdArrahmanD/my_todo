@@ -28,7 +28,7 @@ class InputField extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(title, style: titleStyle),
+            Text(title, style: titleStyle()),
             Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(13),
@@ -53,7 +53,7 @@ class InputField extends StatelessWidget {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: hint,
-                        hintStyle: subTitleStyle,
+                        hintStyle: subTitleStyle(),
                       ),
                     ),
                   ),

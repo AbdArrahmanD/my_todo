@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_todo/controllers/theme_controller.dart';
 
-import 'controllers/theme_servieses.dart';
+import 'models/theme_servieses.dart';
 import 'models/themes.dart';
 import 'views/pages/home_screen.dart';
 
@@ -28,6 +28,14 @@ class MyApp extends StatelessWidget {
 
   AppBar appBar(BuildContext context, int n, {String? title}) => AppBar(
         centerTitle: true,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 7),
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/person.jpeg'),
+            ),
+          )
+        ],
         elevation: 0,
         backgroundColor: Theme.of(context).backgroundColor,
         leading: IconButton(
@@ -58,7 +66,7 @@ class MyApp extends StatelessWidget {
         ),
         title: Text(
           title ?? '',
-          style: headingStyle,
+          style: headingStyle(),
         ),
       );
 }

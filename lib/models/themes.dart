@@ -27,74 +27,80 @@ class Themes {
   );
 }
 
-TextStyle get headingStyle {
-  return GoogleFonts.lato(
-    textStyle: TextStyle(
-      fontSize: 24,
-      fontWeight: FontWeight.bold,
-      color: controller.theme.value == ThemeMode.dark
-          ? Colors.white
-          : Colors.black,
-    ),
-  );
-}
+TextStyle headingStyle({Color? color, double? size}) => GoogleFonts.lato(
+      textStyle: TextStyle(
+        fontSize: size ?? 24,
+        fontWeight: FontWeight.bold,
+        // ignore: prefer_if_null_operators
+        color: color != null
+            ? color
+            : controller.theme.value == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+      ),
+    );
 
-TextStyle get subHeadingStyle {
-  return GoogleFonts.lato(
-    textStyle: TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      color: controller.theme.value == ThemeMode.dark
-          ? Colors.white
-          : Colors.black,
-    ),
-  );
-}
+TextStyle subHeadingStyle({Color? color, double? size}) => GoogleFonts.lato(
+      textStyle: TextStyle(
+        fontSize: size ?? 20,
+        fontWeight: FontWeight.bold,
+        // ignore: prefer_if_null_operators
+        color: color != null
+            ? color
+            : controller.theme.value == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+      ),
+    );
 
-TextStyle get titleStyle {
-  return GoogleFonts.lato(
-    textStyle: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
-      color: controller.theme.value == ThemeMode.dark
-          ? Colors.white
-          : Colors.black,
-    ),
-  );
-}
+TextStyle titleStyle({Color? color, double? size}) => GoogleFonts.lato(
+      textStyle: TextStyle(
+        fontSize: size ?? 18,
+        fontWeight: FontWeight.bold,
+        // ignore: prefer_if_null_operators
+        color: color != null
+            ? color
+            : controller.theme.value == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+      ),
+    );
 
-TextStyle get subTitleStyle {
-  return GoogleFonts.lato(
-    textStyle: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-      color: controller.theme.value == ThemeMode.dark
-          ? Colors.white
-          : Colors.black,
-    ),
-  );
-}
+TextStyle subTitleStyle({Color? color, double? size}) => GoogleFonts.lato(
+      textStyle: TextStyle(
+        fontSize: size ?? 16,
+        fontWeight: FontWeight.bold,
+        // ignore: prefer_if_null_operators
+        color: color != null
+            ? color
+            : controller.theme.value == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+      ),
+    );
 
-TextStyle get bodyStyle {
-  return GoogleFonts.lato(
-    textStyle: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
-      color: controller.theme.value == ThemeMode.dark
-          ? Colors.white
-          : Colors.black,
-    ),
-  );
-}
+TextStyle bodyStyle({Color? color, double? size}) => GoogleFonts.lato(
+      textStyle: TextStyle(
+        fontSize: size ?? 14,
+        fontWeight: FontWeight.bold,
+        // ignore: prefer_if_null_operators
+        color: color != null
+            ? color
+            : controller.theme.value == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+      ),
+    );
 
-TextStyle get bodyStyle2 {
-  return GoogleFonts.lato(
-    textStyle: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
-      color: controller.theme.value == ThemeMode.dark
-          ? Colors.grey[200]
-          : Colors.black,
-    ),
-  );
-}
+TextStyle bodyStyle2({Color? color, double? size}) => GoogleFonts.lato(
+      textStyle: TextStyle(
+        fontSize: size ?? 14,
+        fontWeight: FontWeight.bold,
+        // ignore: prefer_if_null_operators
+        color: color != null
+            ? color
+            : controller.theme.value == ThemeMode.dark
+                ? Colors.grey[200]
+                : Colors.black,
+      ),
+    );
