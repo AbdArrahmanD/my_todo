@@ -26,14 +26,15 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  AppBar appBar(int n, {String? title}) => AppBar(
+  AppBar appBar(BuildContext context, int n, {String? title}) => AppBar(
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Theme.of(context).backgroundColor,
         leading: IconButton(
           icon: n == 0
               ? Obx(
                   () => Icon(
-                    controller.theme.value == ThemeMode.dark
-                        ? Icons.wb_sunny_outlined
-                        : Icons.mode_night,
+                    Icons.dark_mode,
                     color: controller.theme.value == ThemeMode.dark
                         ? Colors.white
                         : Colors.black,
