@@ -1,7 +1,10 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_todo/controllers/task_controller.dart';
+import 'package:my_todo/models/size_config.dart';
 import 'package:my_todo/views/pages/add_task_screen.dart';
 
 import '../../main.dart';
@@ -16,10 +19,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TaskController taskController = Get.put(TaskController());
   DateTime selecedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: MyApp().appBar(context, 0, title: 'To Do'),
@@ -27,15 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
-            taskBar(),
+            addtaskBar(),
             dateBar(context),
+            showTasks(),
           ],
         ),
       ),
     );
   }
 
-  Row taskBar() => Row(
+  Row addtaskBar() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
@@ -80,6 +86,38 @@ class _HomeScreenState extends State<HomeScreen> {
               selecedDate = newDate;
             });
           },
+        ),
+      );
+
+  showTasks() {
+    return Obx(() => Expanded(
+        child:
+            taskController.tasksList.isEmpty ? noTaskYet() : const Center()));
+  }
+
+  noTaskYet() => Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          direction: SizeConfig.orientation == Orientation.portrait
+              ? Axis.vertical
+              : Axis.horizontal,
+          children: [
+            SvgPicture.asset(
+              'assets/images/task.svg',
+              height: SizeConfig.screenHeight / 7,
+              color: primaryClr,
+            ),
+            SizeConfig.orientation == Orientation.portrait
+                ? SizedBox(height: SizeConfig.screenHeight / 17)
+                : SizedBox(width: SizeConfig.screenHeight / 17),
+            Text(
+              'You Don\'t Have Any Task Yet!\nAdd new Task to make your day Productive',
+              style: subTitleStyle(),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
 }
