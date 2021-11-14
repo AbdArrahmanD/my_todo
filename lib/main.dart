@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
                 ),
           onPressed: () {
             if (n == 0) {
-              ThemeServieses().switchThemeMode();
+              controller.updateTheme();
             } else {
               Get.back();
             }
