@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_todo/controllers/theme_controller.dart';
 
+import 'controllers/theme_controller.dart';
 import 'models/themes.dart';
+import 'services/notification_services.dart';
 import 'views/pages/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification;
   runApp(MyApp());
 }
 

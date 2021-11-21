@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:my_todo/controllers/task_controller.dart';
-import 'package:my_todo/models/size_config.dart';
-import 'package:my_todo/services/notification_services.dart';
-import 'package:my_todo/views/pages/add_task_screen.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
+import '../../controllers/task_controller.dart';
 import '../../main.dart';
+import '../../models/size_config.dart';
 import '../../models/themes.dart';
 import '../widgets/button.dart';
+import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,14 +20,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late NotifyHelper notifyHelper;
-
   @override
   void initState() {
+    tz.initializeTimeZones();
     super.initState();
-    notifyHelper = NotifyHelper();
-    notifyHelper.initializationNotification();
-    notifyHelper.requestIOSPermission();
   }
 
   TaskController taskController = Get.put(TaskController());
@@ -73,9 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () async {
                 await Get.to(() => const AddTaskScreen());
                 // addTaskController.getTasks();
-                notifyHelper.displayNotification(
-                    title: 'To Do', body: 'Task Added');
-                notifyHelper.schedulerNotification();
               })
         ],
       );

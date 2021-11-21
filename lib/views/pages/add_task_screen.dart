@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_todo/services/notification_services.dart';
 
 import '../../main.dart';
 import '../../models/themes.dart';
@@ -193,7 +194,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             ),
             MyButton(
                 label: 'Add Task',
-                onTap: () {
+                onTap: () async {
+                  await NotificationService().setNotification(
+                    1,
+                    'Title',
+                    'body',
+                    const Duration(seconds: 3),
+                  );
+                  await NotificationService()
+                      .displayNotification(title: 'Title', body: 'body');
                   Get.back();
                 })
           ],
