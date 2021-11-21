@@ -10,6 +10,7 @@ import '../../main.dart';
 import '../../models/size_config.dart';
 import '../../models/themes.dart';
 import '../widgets/button.dart';
+import '../widgets/task_tile.dart';
 import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -98,8 +99,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   showTasks() {
     return Obx(() => Expanded(
-        child:
-            taskController.tasksList.isEmpty ? noTaskYet() : const Center()));
+        child: taskController.tasksList.isEmpty
+            ? noTaskYet()
+            : SingleChildScrollView(
+                child: Column(
+                  children: taskController.tasksList
+                      .map((task) => TaskTile(task: task))
+                      .toList(),
+                ),
+              )));
   }
 
   noTaskYet() => Container(
