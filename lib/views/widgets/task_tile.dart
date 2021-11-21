@@ -14,7 +14,7 @@ class TaskTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8, right: 20, left: 20),
       padding: const EdgeInsets.all(8.0),
       width: SizeConfig.orientation == Orientation.portrait
           ? double.infinity

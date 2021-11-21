@@ -36,46 +36,46 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: MyApp().appBar(context, 0, title: 'To Do'),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            addtaskBar(),
-            dateBar(context),
-            showTasks(),
-          ],
-        ),
+      body: Column(
+        children: [
+          addtaskBar(),
+          dateBar(context),
+          showTasks(),
+        ],
       ),
     );
   }
 
-  Row addtaskBar() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                DateFormat.yMMMMd().format(DateTime.now()),
-                style: subHeadingStyle(),
-              ),
-              Text(
-                'Today',
-                style: headingStyle(),
-              ),
-            ],
-          ),
-          MyButton(
-              label: '+ Add Task',
-              onTap: () async {
-                await Get.to(() => const AddTaskScreen());
-                // addTaskController.getTasks();
-              })
-        ],
+  Container addtaskBar() => Container(
+        margin: const EdgeInsets.only(top: 10, left: 20, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  DateFormat.yMMMMd().format(DateTime.now()),
+                  style: subHeadingStyle(),
+                ),
+                Text(
+                  'Today',
+                  style: headingStyle(),
+                ),
+              ],
+            ),
+            MyButton(
+                label: '+ Add Task',
+                onTap: () async {
+                  await Get.to(() => const AddTaskScreen());
+                  // addTaskController.getTasks();
+                })
+          ],
+        ),
       );
 
   dateBar(BuildContext context) => Container(
-        margin: const EdgeInsets.symmetric(vertical: 9),
+        margin: const EdgeInsets.only(top: 9, bottom: 9, left: 20, right: 25),
         child: DatePicker(
           DateTime.now(),
           height: 100,
@@ -97,21 +97,34 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
 
-  showTasks() {
-    return Obx(() => Expanded(
-        child: taskController.tasksList.isEmpty
-            ? noTaskYet()
-            : SingleChildScrollView(
-                child: Column(
-                  children: taskController.tasksList
-                      .map((task) => TaskTile(task: task))
-                      .toList(),
-                ),
-              )));
+  Obx showTasks() {
+    return Obx(
+      () => Expanded(
+          child: taskController.tasksList.isEmpty
+              ? noTaskYet()
+              : SizeConfig.orientation == Orientation.portrait
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children: taskController.tasksList
+                            .map((task) => TaskTile(task: task))
+                            .toList(),
+                      ),
+                    )
+                  : GridView.count(
+                      crossAxisCount: 2,
+                      children: taskController.tasksList
+                          .map((task) => TaskTile(task: task))
+                          .toList(),
+
+                      // maxCrossAxisExtent: 200,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 7,
+                    )),
+    );
   }
 
-  noTaskYet() => Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
+  Container noTaskYet() => Container(
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Wrap(
           alignment: WrapAlignment.center,
           crossAxisAlignment: WrapCrossAlignment.center,
