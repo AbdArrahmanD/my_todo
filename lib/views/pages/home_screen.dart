@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: const EdgeInsets.only(top: 9, bottom: 9, left: 20, right: 25),
         child: DatePicker(
           DateTime.now(),
-          height: 100,
+          height: 85,
           width: 70,
           selectionColor: primaryClr,
           selectedTextColor: white,
