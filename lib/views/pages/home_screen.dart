@@ -4,12 +4,12 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:my_todo/models/task.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../controllers/task_controller.dart';
 import '../../main.dart';
 import '../../models/size_config.dart';
+import '../../models/task.dart';
 import '../../models/themes.dart';
 import '../widgets/button.dart';
 import '../widgets/task_tile.dart';
@@ -112,6 +112,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           : Axis.vertical,
                   itemBuilder: (context, index) {
                     Task task = taskController.tasksList[index];
+
+                    DateTime date = DateFormat.jm().parse(task.startTime);
+                    String myTime = DateFormat('HH:mm').format(date);
+                    String hour = myTime.split(':')[0];
+                    String minutes = myTime.split(':')[1];
+
+                    print('Hours : ' + hour);
+                    print('Minutes : ' + minutes);
+                    print(task.startTime);
+
+                    // NotificationService().setNotification(
+                    //   task: task,
+                    //   hour: int.parse(hour),
+                    //   minutes: int.parse(minutes),
+                    // );
+
                     return AnimationConfiguration.staggeredList(
                       duration: const Duration(milliseconds: 400),
                       position: index,
@@ -166,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         width: SizeConfig.screenWidth,
         height: SizeConfig.orientation == Orientation.portrait
-            ? SizeConfig.screenHeight * 0.39
+            ? SizeConfig.screenHeight * 0.35
             : SizeConfig.screenHeight * 0.9,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -219,7 +235,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.back();
                         },
                         color: Colors.grey[600]!),
-                    const SizedBox(height: 5),
                   ],
                 ),
               ),

@@ -195,16 +195,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             MyButton(
                 label: 'Add Task',
                 onTap: () async {
-                  await NotificationService().setNotification(
+                  await NotificationService().setNotificationAfterDuration(
                     1,
                     'Title',
                     'body',
                     const Duration(seconds: 3),
                   );
+
                   await NotificationService()
                       .displayNotification(title: 'Title', body: 'body');
                   Get.back();
-                })
+                }),
           ],
         ),
       );
