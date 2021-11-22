@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../models/task.dart';
 
 class TaskController extends GetxController {
-  RxList tasksList = [
+  RxList<Task> tasksList = [
     Task(
       id: 1,
       color: 0,

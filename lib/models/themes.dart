@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/theme_controller.dart';
 
+ThemeController controller = Get.put(ThemeController());
+
 const Color bluishClr = Color(0xFF4e5ae8);
 const Color orangeClr = Color(0xCFFF8746);
 const Color pinkClr = Color(0xFFff4667);
@@ -11,8 +13,6 @@ const Color white = Colors.white;
 const primaryClr = bluishClr;
 const Color darkGreyClr = Color(0xFF121212);
 const Color darkHeaderClr = Color(0xFF424242);
-
-ThemeController controller = Get.put(ThemeController());
 
 class Themes {
   static final light = ThemeData(
@@ -112,3 +112,9 @@ TextStyle bodyStyle2({Color? color, double? size, FontWeight? fontWeight}) =>
                 : Colors.black,
       ),
     );
+
+Color getColor({
+  required Color lightColor,
+  required Color darkColor,
+}) =>
+    controller.theme.value == ThemeMode.dark ? darkColor : lightColor;

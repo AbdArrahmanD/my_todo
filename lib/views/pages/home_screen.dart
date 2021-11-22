@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_todo/models/task.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../controllers/task_controller.dart';
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 100,
           width: 70,
           selectionColor: primaryClr,
-          selectedTextColor: Colors.white,
+          selectedTextColor: white,
           initialSelectedDate: DateTime.now(),
           dateTextStyle: subHeadingStyle(
               size: 24, color: Colors.grey, fontWeight: FontWeight.w600),
@@ -106,14 +107,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? SingleChildScrollView(
                       child: Column(
                         children: taskController.tasksList
-                            .map((task) => TaskTile(task: task))
+                            .map((task) => GestureDetector(
+                                onTap: () {
+                                  showButtomSheet(
+                                      task,
+                                      task.color == 0
+                                          ? primaryClr
+                                          : task.color == 1
+                                              ? pinkClr
+                                              : orangeClr);
+                                },
+                                child: TaskTile(task: task)))
                             .toList(),
                       ),
                     )
                   : GridView.count(
                       crossAxisCount: 2,
                       children: taskController.tasksList
-                          .map((task) => TaskTile(task: task))
+                          .map((task) => GestureDetector(
+                                onTap: showButtomSheet(
+                                    task,
+                                    task.color == 0
+                                        ? primaryClr
+                                        : task.color == 1
+                                            ? pinkClr
+                                            : orangeClr),
+                                child: TaskTile(task: task),
+                              ))
                           .toList(),
 
                       // maxCrossAxisExtent: 200,
@@ -146,6 +166,89 @@ class _HomeScreenState extends State<HomeScreen> {
               textAlign: TextAlign.center,
             ),
           ],
+        ),
+      );
+
+  showButtomSheet(Task task, Color tileColor) =>
+      Get.bottomSheet(SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+          width: SizeConfig.screenWidth,
+          height: SizeConfig.orientation == Orientation.portrait
+              ? SizeConfig.screenHeight * 0.39
+              : SizeConfig.screenHeight * 0.8,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: tileColor.withOpacity(0.8),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: SizeConfig.screenWidth / 3,
+                height: 5,
+                margin: const EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: getColor(
+                    lightColor: Colors.grey,
+                    darkColor: white,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(height: 15),
+              modelSheetButton(
+                  label: task.isCompleted == 0 ? 'Complete' : 'Not Complete',
+                  onTap: () {
+                    Get.back();
+                  },
+                  color: Colors.grey[600]!),
+              const SizedBox(height: 7),
+              modelSheetButton(
+                  label: 'Delete',
+                  onTap: () {
+                    Get.back();
+                  },
+                  color: Colors.grey[600]!),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                child: const Divider(
+                  color: white,
+                ),
+              ),
+              modelSheetButton(
+                  label: 'Cancel',
+                  onTap: () {
+                    Get.back();
+                  },
+                  color: Colors.grey[600]!),
+              const SizedBox(height: 5),
+            ],
+          ),
+        ),
+      ));
+
+  modelSheetButton({
+    required String label,
+    required Function() onTap,
+    required Color color,
+  }) =>
+      GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: SizeConfig.screenWidth * 0.9,
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: titleStyle(color: white),
+            ),
+          ),
         ),
       );
 }

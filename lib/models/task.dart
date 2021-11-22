@@ -1,12 +1,12 @@
 class Task {
-  late int id;
-  late int color;
-  late int isCompleted;
-  late String title;
-  late String note;
-  late String startTime;
-  late String endTime;
-  late String date;
+  int id;
+  int color;
+  int isCompleted;
+  String title;
+  String note;
+  String startTime;
+  String endTime;
+  String date;
   Task({
     required this.id,
     required this.color,
