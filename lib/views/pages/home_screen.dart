@@ -1,5 +1,6 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -103,43 +104,35 @@ class _HomeScreenState extends State<HomeScreen> {
       () => Expanded(
           child: taskController.tasksList.isEmpty
               ? noTaskYet()
-              : SizeConfig.orientation == Orientation.portrait
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: taskController.tasksList
-                            .map((task) => GestureDetector(
-                                onTap: () {
-                                  showButtomSheet(
-                                      task,
-                                      task.color == 0
-                                          ? primaryClr
-                                          : task.color == 1
-                                              ? pinkClr
-                                              : orangeClr);
-                                },
-                                child: TaskTile(task: task)))
-                            .toList(),
-                      ),
-                    )
-                  : GridView.count(
-                      crossAxisCount: 2,
-                      children: taskController.tasksList
-                          .map((task) => GestureDetector(
-                                onTap: showButtomSheet(
+              : ListView.builder(
+                  itemCount: taskController.tasksList.length,
+                  scrollDirection:
+                      SizeConfig.orientation == Orientation.landscape
+                          ? Axis.horizontal
+                          : Axis.vertical,
+                  itemBuilder: (context, index) {
+                    Task task = taskController.tasksList[index];
+                    return AnimationConfiguration.staggeredList(
+                      duration: const Duration(milliseconds: 400),
+                      position: index,
+                      child: SlideAnimation(
+                        horizontalOffset: 300,
+                        child: FadeInAnimation(
+                          child: GestureDetector(
+                              onTap: () {
+                                showButtomSheet(
                                     task,
                                     task.color == 0
                                         ? primaryClr
                                         : task.color == 1
                                             ? pinkClr
-                                            : orangeClr),
-                                child: TaskTile(task: task),
-                              ))
-                          .toList(),
-
-                      // maxCrossAxisExtent: 200,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 7,
-                    )),
+                                            : orangeClr);
+                              },
+                              child: TaskTile(task: task)),
+                        ),
+                      ),
+                    );
+                  })),
     );
   }
 
@@ -169,62 +162,69 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
 
-  showButtomSheet(Task task, Color tileColor) =>
-      Get.bottomSheet(SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-          width: SizeConfig.screenWidth,
-          height: SizeConfig.orientation == Orientation.portrait
-              ? SizeConfig.screenHeight * 0.39
-              : SizeConfig.screenHeight * 0.8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: tileColor.withOpacity(0.8),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: SizeConfig.screenWidth / 3,
-                height: 5,
-                margin: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                  color: getColor(
-                    lightColor: Colors.grey,
-                    darkColor: white,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
+  showButtomSheet(Task task, Color tileColor) => Get.bottomSheet(Container(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        width: SizeConfig.screenWidth,
+        height: SizeConfig.orientation == Orientation.portrait
+            ? SizeConfig.screenHeight * 0.39
+            : SizeConfig.screenHeight * 0.9,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: tileColor.withOpacity(0.8),
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: SizeConfig.screenWidth / 3,
+              height: 5,
+              margin: const EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+                color: getColor(
+                  lightColor: Colors.grey,
+                  darkColor: white,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(height: 15),
+                    modelSheetButton(
+                        label:
+                            task.isCompleted == 0 ? 'Complete' : 'Not Complete',
+                        onTap: () {
+                          Get.back();
+                        },
+                        color: Colors.grey[600]!),
+                    const SizedBox(height: 7),
+                    modelSheetButton(
+                        label: 'Delete',
+                        onTap: () {
+                          Get.back();
+                        },
+                        color: Colors.grey[600]!),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      child: const Divider(
+                        color: white,
+                      ),
+                    ),
+                    modelSheetButton(
+                        label: 'Cancel',
+                        onTap: () {
+                          Get.back();
+                        },
+                        color: Colors.grey[600]!),
+                    const SizedBox(height: 5),
+                  ],
                 ),
               ),
-              const SizedBox(height: 15),
-              modelSheetButton(
-                  label: task.isCompleted == 0 ? 'Complete' : 'Not Complete',
-                  onTap: () {
-                    Get.back();
-                  },
-                  color: Colors.grey[600]!),
-              const SizedBox(height: 7),
-              modelSheetButton(
-                  label: 'Delete',
-                  onTap: () {
-                    Get.back();
-                  },
-                  color: Colors.grey[600]!),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: const Divider(
-                  color: white,
-                ),
-              ),
-              modelSheetButton(
-                  label: 'Cancel',
-                  onTap: () {
-                    Get.back();
-                  },
-                  color: Colors.grey[600]!),
-              const SizedBox(height: 5),
-            ],
-          ),
+            ),
+          ],
         ),
       ));
 
