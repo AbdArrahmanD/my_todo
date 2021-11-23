@@ -7,6 +7,8 @@ class Task {
   String startTime;
   String endTime;
   String date;
+  int remind;
+  String repeat;
   Task({
     required this.id,
     required this.color,
@@ -16,5 +18,7 @@ class Task {
     required this.startTime,
     required this.endTime,
     required this.date,
+    required this.repeat,
+    required this.remind,
   });
 }

@@ -15,6 +15,8 @@ class TaskController extends GetxController {
       startTime: DateFormat('hh:mm a').format(DateTime.now()),
       endTime: '03:08',
       date: '20/10',
+      remind: 5,
+      repeat: '',
     ),
     Task(
       id: 2,
@@ -25,6 +27,8 @@ class TaskController extends GetxController {
       startTime: DateFormat('hh:mm a').format(DateTime.now()),
       endTime: '03:08',
       date: '20/10',
+      remind: 5,
+      repeat: '',
     ),
     Task(
       id: 2,
@@ -37,6 +41,8 @@ class TaskController extends GetxController {
           .format(DateTime.now().add(const Duration(minutes: 1))),
       endTime: '03:08',
       date: '20/10',
+      remind: 5,
+      repeat: '',
     ),
   ].obs;
 }

@@ -40,7 +40,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyApp().appBar(context, 1, title: 'Add Task'),
+      appBar: MyApp().appBar(context, 1, title: 'Add New Task'),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -103,7 +103,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             (e) => DropdownMenuItem(
                               value: e,
                               child: Text(
-                                e.toString(),
+                                '$e min',
+                                style: const TextStyle(color: white),
                               ),
                             ),
                           )
@@ -131,6 +132,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               value: e,
                               child: Text(
                                 e,
+                                style: const TextStyle(color: white),
                               ),
                             ),
                           )

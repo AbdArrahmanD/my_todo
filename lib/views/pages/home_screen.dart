@@ -118,10 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     String hour = myTime.split(':')[0];
                     String minutes = myTime.split(':')[1];
 
-                    print('Hours : ' + hour);
-                    print('Minutes : ' + minutes);
-                    print(task.startTime);
-
                     // NotificationService().setNotification(
                     //   task: task,
                     //   hour: int.parse(hour),
