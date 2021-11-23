@@ -19,7 +19,12 @@ class DbServices {
           onCreate: (Database db, int version) async {
             // When creating the db, create the table
             await db.execute(
-                'CREATE TABLE $tabelName (id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, note TEXT, date STRING, startTime STRING, endTime STRING, remind INTEGER, repeat STRING, color INTEGER, isComplete INTEGER)');
+                'CREATE TABLE $tabelName (id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                'title STRING, '
+                'note TEXT, date STRING, '
+                'startTime STRING, endTime STRING, '
+                'remind INTEGER, repeat STRING, '
+                'color INTEGER, isComplete INTEGER)');
           },
         );
         print('Done DB.init() Successfully');
