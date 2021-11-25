@@ -70,7 +70,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     icon: const Icon(
                       Icons.calendar_today_outlined,
                     ),
-                    onPressed: () {},
+                    onPressed: () => pickDate(),
                   ),
                 ),
                 Row(
@@ -81,7 +81,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         hint: startTime,
                         widget: IconButton(
                           icon: const Icon(Icons.access_alarm_rounded),
-                          onPressed: () {},
+                          onPressed: () => pickTime(true),
                         ),
                       ),
                     ),
@@ -91,7 +91,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         hint: endTime,
                         widget: IconButton(
                           icon: const Icon(Icons.access_alarm_rounded),
-                          onPressed: () {},
+                          onPressed: () => pickTime(false),
                         ),
                       ),
                     ),
@@ -99,7 +99,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),
                 InputField(
                     title: 'Remind',
-                    hint: '$selectedRemind min early',
+                    hint: selectedRemind == 0
+                        ? 'None'
+                        : '$selectedRemind min early',
                     widget: DropdownButton(
                       items: remindList
                           .map(
@@ -242,4 +244,33 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           ],
         ),
       );
+
+  pickDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now().subtract(const Duration(days: 1)),
+      lastDate: DateTime(2030),
+    );
+    if (pickedDate != null)
+      setState(() => selectedDate = pickedDate);
+    else
+      print('Something went wrong');
+  }
+
+  pickTime(bool isStartTime) async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: isStartTime
+          ? TimeOfDay.fromDateTime(DateTime.now())
+          : TimeOfDay.fromDateTime(
+              DateTime.now().add(const Duration(minutes: 15))),
+    );
+    if (pickedTime != null) {
+      String formattedTime = pickedTime.format(context);
+      setState(() {
+        isStartTime ? startTime = formattedTime : endTime = formattedTime;
+      });
+    }
+  }
 }
