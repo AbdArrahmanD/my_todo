@@ -66,7 +66,7 @@ class NotificationService {
     required Task task,
   }) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      task.id,
+      task.id!, // id may be null when creating task
       task.title,
       task.note,
       _nextInstanceOfTenAM(hour, minutes),

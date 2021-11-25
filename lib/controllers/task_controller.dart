@@ -45,4 +45,5 @@ class TaskController extends GetxController {
       repeat: '',
     ),
   ].obs;
+  addTask({required Task task}) {}
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_todo/controllers/task_controller.dart';
+import 'package:my_todo/models/task.dart';
 
 import '../../main.dart';
 import '../../models/themes.dart';
-import '../../services/notification_services.dart';
 import '../widgets/button.dart';
 import '../widgets/input_field.dart';
 
@@ -16,6 +17,8 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
+  TaskController taskController = Get.put(TaskController());
+
   final TextEditingController titleController = TextEditingController();
 
   final TextEditingController noteController = TextEditingController();
@@ -29,7 +32,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   int selectedRemind = 5;
 
-  List<int> remindList = [5, 10, 15, 20];
+  List<int> remindList = [0, 5, 10, 15, 20];
 
   String selectedRepeat = 'None';
 
@@ -103,7 +106,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             (e) => DropdownMenuItem(
                               value: e,
                               child: Text(
-                                '$e min',
+                                e == 0 ? 'None' : '$e min',
                                 style: const TextStyle(color: white),
                               ),
                             ),
@@ -150,7 +153,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       },
                       underline: Container(height: 0),
                     )),
-                colorPicker()
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    colorPicker(),
+                    MyButton(label: 'Add Task', onTap: () => validation())
+                  ],
+                )
               ],
             ),
           ),
@@ -159,55 +169,76 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
+  void validation() {
+    if (titleController.text.isNotEmpty) {
+      addTasktoDb();
+      Get.back();
+    } else {
+      Get.snackbar(
+        'Field Required',
+        'Title field must be filled',
+        duration: const Duration(seconds: 2),
+        backgroundColor: getColor(
+          lightColor: Colors.grey[300]!,
+          darkColor: white,
+        ),
+        colorText: Colors.red,
+        icon: const Icon(
+          Icons.warning_amber_rounded,
+          color: Colors.red,
+        ),
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.only(bottom: 8),
+      );
+    }
+  }
+
+  addTasktoDb() async {
+    int? value = await taskController.addTask(
+        task: Task(
+      color: selectedColor,
+      isCompleted: 0,
+      title: titleController.text,
+      note: noteController.text,
+      startTime: startTime,
+      endTime: endTime,
+      date: DateFormat.yMd().format(selectedDate),
+      remind: selectedRemind,
+      repeat: selectedRepeat,
+    ));
+    // await NotificationService().setNotification(hour: ,minutes: );
+    print(value);
+  }
+
   Widget colorPicker() => Padding(
         padding: const EdgeInsets.only(top: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
           children: [
-            Column(
-              children: [
-                Text('Choose Color', style: titleStyle()),
-                Row(
-                  children: List.generate(
-                      3,
-                      (index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedColor = index;
-                                });
-                              },
-                              child: CircleAvatar(
-                                child: selectedColor == index
-                                    ? const Icon(Icons.done)
-                                    : null,
-                                backgroundColor: index == 0
-                                    ? primaryClr
-                                    : index == 1
-                                        ? pinkClr
-                                        : orangeClr,
-                              ),
-                            ),
-                          )),
-                ),
-              ],
+            Text('Choose Color', style: titleStyle()),
+            Row(
+              children: List.generate(
+                  3,
+                  (index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColor = index;
+                            });
+                          },
+                          child: CircleAvatar(
+                            child: selectedColor == index
+                                ? const Icon(Icons.done)
+                                : null,
+                            backgroundColor: index == 0
+                                ? primaryClr
+                                : index == 1
+                                    ? pinkClr
+                                    : orangeClr,
+                          ),
+                        ),
+                      )),
             ),
-            MyButton(
-                label: 'Add Task',
-                onTap: () async {
-                  await NotificationService().setNotificationAfterDuration(
-                    1,
-                    'Title',
-                    'body',
-                    const Duration(seconds: 3),
-                  );
-
-                  await NotificationService()
-                      .displayNotification(title: 'Title', body: 'body');
-                  Get.back();
-                }),
           ],
         ),
       );
