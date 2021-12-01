@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:my_todo/db/db_services.dart';
 
 import 'controllers/theme_controller.dart';
+import 'db/db_services.dart';
 import 'models/themes.dart';
 import 'services/notification_services.dart';
 import 'views/pages/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  NotificationService().initNotification;
+  NotificationService().initNotification();
   await DbServices.init();
   await GetStorage.init();
   runApp(MyApp());

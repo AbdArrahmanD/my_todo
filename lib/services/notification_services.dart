@@ -1,6 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:get/get.dart';
 import 'package:my_todo/models/task.dart';
+import 'package:my_todo/views/pages/notification_screen.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class NotificationService {
   static final NotificationService _notificationService =
@@ -14,8 +20,16 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   NotificationService._internal();
+  String selectedNotificationPayload = '';
+
+  final BehaviorSubject<String> selectNotificationSubject =
+      BehaviorSubject<String>();
 
   Future<void> initNotification() async {
+    tz.initializeTimeZones();
+    _configureSelectNotificationSubject();
+    await _configureLocalTimeZone();
+
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@drawable/ic_stat_check');
 
@@ -35,7 +49,10 @@ class NotificationService {
   }
 
   Future<void> setNotificationAfterDuration(
-      int id, String title, String body, Duration duration) async {
+      {required int id,
+      required String title,
+      String? body,
+      required Duration duration}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
@@ -59,6 +76,27 @@ class NotificationService {
       androidAllowWhileIdle: true,
     );
   }
+
+  // setNotification(
+  //     {required int id,
+  //     required String title,
+  //     required DateTime date,
+  //     String? note}) async {
+  //   await flutterLocalNotificationsPlugin.zonedSchedule(
+  //       id,
+  //       title,
+  //       note,
+  //       tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+  //       const NotificationDetails(
+  //           android: AndroidNotificationDetails(
+  //         'your channel id',
+  //         'your channel name',
+  //         'your channel description',
+  //       )),
+  //       androidAllowWhileIdle: true,
+  //       uiLocalNotificationDateInterpretation:
+  //           UILocalNotificationDateInterpretation.absoluteTime);
+  // }
 
   Future<void> setNotification({
     required int hour,
@@ -122,5 +160,20 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
+  }
+
+  Future<void> _configureLocalTimeZone() async {
+    tz.initializeTimeZones();
+    final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationSubject.stream.listen((String payload) async {
+      debugPrint('My payload is ' + payload);
+      await Get.to(() => NotificationScreen(
+            payLoad: payload,
+          ));
+    });
   }
 }

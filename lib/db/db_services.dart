@@ -14,35 +14,38 @@ class DbServices {
       try {
         String databasesPath = await getDatabasesPath();
         String path = join(databasesPath, tabelName);
-        Database database = await openDatabase(
+        db = await openDatabase(
           path,
           version: version,
           onCreate: (Database db, int version) async {
             // When creating the db, create the table
             await db.execute(
-                'CREATE TABLE $tabelName (id INTEGER PRIMARY KEY AUTOINCREMENT, '
-                'title STRING, '
-                'note TEXT, date STRING, '
-                'startTime STRING, endTime STRING, '
-                'remind INTEGER, repeat STRING, '
-                'color INTEGER, isComplete INTEGER)');
+              'CREATE TABLE $tabelName ('
+              'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+              'title STRING, note TEXT, date STRING, isCompleted INTEGER, '
+              'startTime STRING, endTime STRING, '
+              'remind INTEGER, repeat STRING, '
+              'color INTEGER)',
+            );
           },
         );
         print('Done DB.init() Successfully');
       } catch (e) {
         print(e);
       }
+      print('DB is : $db');
     }
   }
 
   static Future<int> insert(Task task) async {
     print('Inserting Task to DataBase');
+    print('DB is : $db');
     return db!.insert(tabelName, task.toJson());
   }
 
-  static Future<int> delete(Task task) async {
+  static Future<int> delete(int id) async {
     print('Deleting Task from DataBase');
-    return db!.delete(tabelName, where: 'id = ?', whereArgs: [task.id]);
+    return db!.delete(tabelName, where: 'id = ?', whereArgs: [id]);
   }
 
   static Future<int> update(Task task) async {
@@ -52,6 +55,7 @@ class DbServices {
       task.toJson(),
       where: 'id = ?',
       whereArgs: [task.id],
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
@@ -60,7 +64,7 @@ class DbServices {
     return db!.rawUpdate(
       '''
     UPDATE $tabelName
-    SET isComplete = ?
+    SET isCompleted = ?
     WHERE id = ?
     ''',
       [

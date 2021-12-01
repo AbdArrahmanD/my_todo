@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_todo/controllers/task_controller.dart';
 import 'package:my_todo/models/task.dart';
+import 'package:my_todo/services/notification_services.dart';
 
 import '../../main.dart';
 import '../../models/themes.dart';
@@ -61,7 +62,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 InputField(
                   title: 'Note',
                   hint: 'Add Note here',
-                  controller: titleController,
+                  controller: noteController,
                 ),
                 InputField(
                   title: 'Date',
@@ -196,20 +197,58 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   addTasktoDb() async {
-    int? value = await taskController.addTask(
-        task: Task(
-      color: selectedColor,
-      isCompleted: 0,
-      title: titleController.text,
-      note: noteController.text,
-      startTime: startTime,
-      endTime: endTime,
-      date: DateFormat.yMd().format(selectedDate),
-      remind: selectedRemind,
-      repeat: selectedRepeat,
-    ));
-    // await NotificationService().setNotification(hour: ,minutes: );
-    print(value);
+    try {
+      int? value = await taskController.insertTask(
+          task: Task(
+        color: selectedColor,
+        isCompleted: 0,
+        title: titleController.text,
+        note: noteController.text,
+        startTime: startTime,
+        endTime: endTime,
+        date: DateFormat.yMd().format(selectedDate),
+        remind: selectedRemind,
+        repeat: selectedRepeat,
+      ));
+      print(value);
+
+      String day = selectedDate.toString().split(' ')[0];
+      selectedDate = DateTime.parse(day);
+      startTime = startTime.split(' ')[0];
+      String hour = startTime.split(':')[0];
+      String minutes = startTime.split(':')[1];
+
+      selectedDate = selectedDate.add(Duration(
+        hours: int.parse(hour),
+        minutes: int.parse(minutes),
+      ));
+
+      Duration difference = selectedDate.difference(DateTime.now());
+      debugPrint(
+          'Day : $selectedDate\nHour : ${int.parse(hour)}\nMin : ${int.parse(minutes)}\nSet Notification After $difference');
+      !difference.isNegative
+          ? NotificationService().setNotificationAfterDuration(
+              id: value, title: titleController.text, duration: difference)
+          : null;
+      // NotificationService().setNotification(
+      //   hour: int.parse(hour),
+      //   minutes: int.parse(minutes),
+      //   task: Task(
+      //     id: value,
+      //     color: selectedColor,
+      //     isCompleted: 0,
+      //     title: titleController.text,
+      //     note: noteController.text,
+      //     startTime: startTime,
+      //     endTime: endTime,
+      //     date: DateFormat.yMd().format(selectedDate),
+      //     remind: selectedRemind,
+      //     repeat: selectedRepeat,
+      //   ),
+      // );
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget colorPicker() => Padding(
@@ -255,7 +294,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     if (pickedDate != null)
       setState(() => selectedDate = pickedDate);
     else
-      print('Something went wrong');
+      debugPrint('Something went wrong');
   }
 
   pickTime(bool isStartTime) async {
@@ -271,6 +310,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       setState(() {
         isStartTime ? startTime = formattedTime : endTime = formattedTime;
       });
+      // print('SelectedTime is : $pickedTime');
     }
   }
 }

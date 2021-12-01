@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tz;
-
 import '../../controllers/task_controller.dart';
 import '../../main.dart';
 import '../../models/size_config.dart';
@@ -26,6 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     tz.initializeTimeZones();
+    taskController.getTask();
+    debugPrint('initState');
     super.initState();
   }
 
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: '+ Add Task',
                 onTap: () async {
                   await Get.to(() => const AddTaskScreen());
-                  // addTaskController.getTasks();
+                  taskController.getTask();
                 })
           ],
         ),
@@ -104,73 +105,88 @@ class _HomeScreenState extends State<HomeScreen> {
       () => Expanded(
           child: taskController.tasksList.isEmpty
               ? noTaskYet()
-              : ListView.builder(
-                  itemCount: taskController.tasksList.length,
-                  scrollDirection:
-                      SizeConfig.orientation == Orientation.landscape
-                          ? Axis.horizontal
-                          : Axis.vertical,
-                  itemBuilder: (context, index) {
-                    Task task = taskController.tasksList[index];
+              : RefreshIndicator(
+                  onRefresh: refresh,
+                  child: ListView.builder(
+                      itemCount: taskController.tasksList.length,
+                      scrollDirection:
+                          SizeConfig.orientation == Orientation.landscape
+                              ? Axis.horizontal
+                              : Axis.vertical,
+                      itemBuilder: (context, index) {
+                        Task task = taskController.tasksList[index];
 
-                    DateTime date = DateFormat.jm().parse(task.startTime);
-                    String myTime = DateFormat('HH:mm').format(date);
-                    String hour = myTime.split(':')[0];
-                    String minutes = myTime.split(':')[1];
+                        // DateTime myDate = DateTime.parse(task.date);
+                        // var date = DateFormat('yMd').parse(task.date);
+                        // print(task.date);
+                        // print('${task.title} ParsedDate is $myDate');
+                        // String myTime = DateFormat('HH:mm').format(date);
+                        // String hour = myTime.split(':')[0];
+                        // String minutes = myTime.split(':')[1];
 
-                    // NotificationService().setNotification(
-                    //   task: task,
-                    //   hour: int.parse(hour),
-                    //   minutes: int.parse(minutes),
-                    // );
+                        // NotificationService().setNotification(
+                        //     hour: int.parse(hour),
+                        //     minutes: int.parse(minutes),
+                        //     task: task);
 
-                    return AnimationConfiguration.staggeredList(
-                      duration: const Duration(milliseconds: 400),
-                      position: index,
-                      child: SlideAnimation(
-                        horizontalOffset: 300,
-                        child: FadeInAnimation(
-                          child: GestureDetector(
-                              onTap: () {
-                                showButtomSheet(
-                                    task,
-                                    task.color == 0
-                                        ? primaryClr
-                                        : task.color == 1
-                                            ? pinkClr
-                                            : orangeClr);
-                              },
-                              child: TaskTile(task: task)),
-                        ),
-                      ),
-                    );
-                  })),
+                        if (task.repeat == 'Daily' ||
+                            task.date == DateFormat.yMd().format(selecedDate))
+                          return AnimationConfiguration.staggeredList(
+                            duration: const Duration(milliseconds: 400),
+                            position: index,
+                            child: SlideAnimation(
+                              horizontalOffset: 300,
+                              child: FadeInAnimation(
+                                child: GestureDetector(
+                                    onTap: () {
+                                      showButtomSheet(
+                                          task,
+                                          task.color == 0
+                                              ? primaryClr
+                                              : task.color == 1
+                                                  ? pinkClr
+                                                  : orangeClr);
+                                    },
+                                    child: TaskTile(task: task)),
+                              ),
+                            ),
+                          );
+                        else
+                          return noTaskYet();
+                      }),
+                )),
     );
   }
 
   Container noTaskYet() => Container(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          direction: SizeConfig.orientation == Orientation.portrait
-              ? Axis.vertical
-              : Axis.horizontal,
-          children: [
-            SvgPicture.asset(
-              'assets/images/task.svg',
-              height: SizeConfig.screenHeight / 7,
-              color: primaryClr,
+        child: RefreshIndicator(
+          onRefresh: refresh,
+          child: SingleChildScrollView(
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              direction: SizeConfig.orientation == Orientation.portrait
+                  ? Axis.vertical
+                  : Axis.horizontal,
+              children: [
+                SizedBox(height: SizeConfig.screenHeight / 5),
+                SvgPicture.asset(
+                  'assets/images/task.svg',
+                  height: SizeConfig.screenHeight / 7,
+                  color: primaryClr,
+                ),
+                SizeConfig.orientation == Orientation.portrait
+                    ? SizedBox(height: SizeConfig.screenHeight / 17)
+                    : SizedBox(width: SizeConfig.screenHeight / 17),
+                Text(
+                  'You Don\'t Have Any Task Yet!\nAdd new Task to make your day Productive',
+                  style: subTitleStyle(),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            SizeConfig.orientation == Orientation.portrait
-                ? SizedBox(height: SizeConfig.screenHeight / 17)
-                : SizedBox(width: SizeConfig.screenHeight / 17),
-            Text(
-              'You Don\'t Have Any Task Yet!\nAdd new Task to make your day Productive',
-              style: subTitleStyle(),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
         ),
       );
 
@@ -209,6 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         label:
                             task.isCompleted == 0 ? 'Complete' : 'Not Complete',
                         onTap: () {
+                          taskController.completeTask(task: task);
                           Get.back();
                         },
                         color: Colors.grey[600]!),
@@ -216,6 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     modelSheetButton(
                         label: 'Delete',
                         onTap: () {
+                          taskController.deleteTask(id: task.id!);
                           Get.back();
                         },
                         color: Colors.grey[600]!),
@@ -262,4 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       );
+
+  Future<void> refresh() async {
+    await taskController.getTask();
+  }
 }

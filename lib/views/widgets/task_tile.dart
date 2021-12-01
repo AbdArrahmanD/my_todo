@@ -56,7 +56,7 @@ class TaskTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  task.note,
+                  task.note!,
                   style: subTitleStyle(
                     fontWeight: FontWeight.normal,
                     color: Colors.grey[100],
