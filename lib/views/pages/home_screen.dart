@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         //     task: task);
 
                         if (task.repeat == 'Daily' ||
-                            task.date == DateFormat.yMd().format(selecedDate))
+                            task.date == DateFormat.yMd().format(selecedDate)) {
                           return AnimationConfiguration.staggeredList(
                             duration: const Duration(milliseconds: 400),
                             position: index,
@@ -151,8 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           );
-                        else
+                        } else if (taskController.tasksList.isEmpty) {
                           return noTaskYet();
+                        } else {
+                          return Container();
+                        }
                       }),
                 )),
     );
@@ -234,9 +237,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         label: 'Delete',
                         onTap: () {
                           taskController.deleteTask(id: task.id!);
+
                           Get.back();
                         },
-                        color: Colors.grey[600]!),
+                        color: Colors.red),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       child: const Divider(

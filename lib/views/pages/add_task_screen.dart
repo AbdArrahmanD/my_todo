@@ -226,26 +226,27 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       Duration difference = selectedDate.difference(DateTime.now());
       debugPrint(
           'Day : $selectedDate\nHour : ${int.parse(hour)}\nMin : ${int.parse(minutes)}\nSet Notification After $difference');
-      !difference.isNegative
-          ? NotificationService().setNotificationAfterDuration(
-              id: value, title: titleController.text, duration: difference)
-          : null;
-      // NotificationService().setNotification(
-      //   hour: int.parse(hour),
-      //   minutes: int.parse(minutes),
-      //   task: Task(
-      //     id: value,
-      //     color: selectedColor,
-      //     isCompleted: 0,
-      //     title: titleController.text,
-      //     note: noteController.text,
-      //     startTime: startTime,
-      //     endTime: endTime,
-      //     date: DateFormat.yMd().format(selectedDate),
-      //     remind: selectedRemind,
-      //     repeat: selectedRepeat,
-      //   ),
-      // );
+      // !difference.isNegative
+      // ? NotificationService().setNotificationAfterDuration(
+      //     id: value, title: titleController.text, duration: difference)
+      // : null;
+
+      NotificationService().scheduledNotification(
+        int.parse(hour),
+        int.parse(minutes),
+        Task(
+          id: value,
+          color: selectedColor,
+          isCompleted: 0,
+          title: titleController.text,
+          note: noteController.text,
+          startTime: startTime,
+          endTime: endTime,
+          date: DateFormat.yMd().format(selectedDate),
+          remind: selectedRemind,
+          repeat: selectedRepeat,
+        ),
+      );
     } catch (e) {
       print(e);
     }

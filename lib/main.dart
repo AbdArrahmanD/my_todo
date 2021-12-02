@@ -11,6 +11,7 @@ import 'views/pages/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
+  NotificationService().requestIOSPermissions();
   await DbServices.init();
   await GetStorage.init();
   runApp(MyApp());

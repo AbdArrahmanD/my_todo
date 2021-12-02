@@ -15,37 +15,45 @@ class NotificationService {
   factory NotificationService() {
     return _notificationService;
   }
+  NotificationService._internal();
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  NotificationService._internal();
   String selectedNotificationPayload = '';
 
   final BehaviorSubject<String> selectNotificationSubject =
       BehaviorSubject<String>();
 
-  Future<void> initNotification() async {
+  initNotification() async {
     tz.initializeTimeZones();
     _configureSelectNotificationSubject();
     await _configureLocalTimeZone();
 
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+      requestSoundPermission: false,
+      requestBadgePermission: false,
+      requestAlertPermission: false,
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    );
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@drawable/ic_stat_check');
 
-    const IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-
-    const InitializationSettings initializationSettings =
+    final InitializationSettings initializationSettings =
         InitializationSettings(
             android: initializationSettingsAndroid,
             iOS: initializationSettingsIOS);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onSelectNotification: (String? payload) async {
+        if (payload != null) {
+          debugPrint('notification payload: ' + payload);
+        }
+        selectNotificationSubject.add(payload!);
+      },
+    );
   }
 
   Future<void> setNotificationAfterDuration(
@@ -76,27 +84,6 @@ class NotificationService {
       androidAllowWhileIdle: true,
     );
   }
-
-  // setNotification(
-  //     {required int id,
-  //     required String title,
-  //     required DateTime date,
-  //     String? note}) async {
-  //   await flutterLocalNotificationsPlugin.zonedSchedule(
-  //       id,
-  //       title,
-  //       note,
-  //       tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-  //       const NotificationDetails(
-  //           android: AndroidNotificationDetails(
-  //         'your channel id',
-  //         'your channel name',
-  //         'your channel description',
-  //       )),
-  //       androidAllowWhileIdle: true,
-  //       uiLocalNotificationDateInterpretation:
-  //           UILocalNotificationDateInterpretation.absoluteTime);
-  // }
 
   Future<void> setNotification({
     required int hour,
@@ -152,6 +139,25 @@ class NotificationService {
         payload: 'Default_Sound');
   }
 
+  scheduledNotification(int hour, int minutes, Task task) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      task.id!,
+      task.title,
+      task.note,
+      //tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+      _nextInstanceOfTenAM(hour, minutes),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+            'your channel id', 'your channel name', 'your channel description'),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: '${task.title}|${task.note ?? ' '}|${task.startTime}|',
+    );
+  }
+
   tz.TZDateTime _nextInstanceOfTenAM(int hour, int minutes) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
@@ -162,10 +168,26 @@ class NotificationService {
     return scheduledDate;
   }
 
+  void requestIOSPermissions() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
   Future<void> _configureLocalTimeZone() async {
     tz.initializeTimeZones();
     final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timeZoneName));
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) async {
+    Get.dialog(Text(body!));
   }
 
   void _configureSelectNotificationSubject() {
