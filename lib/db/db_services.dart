@@ -45,7 +45,7 @@ class DbServices {
   }
 
   static Future<int> delete(int id) async {
-    debugPrint('Deleting Task from DataBase');
+    debugPrint('Deleting Task $id from DataBase');
     return db!.delete(tabelName, where: 'id = ?', whereArgs: [id]);
   }
 
