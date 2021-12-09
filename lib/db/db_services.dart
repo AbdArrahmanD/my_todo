@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:my_todo/models/task.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -8,7 +9,7 @@ class DbServices {
   static int version = 1;
   static Future<void> init() async {
     if (db != null) {
-      print('db is not null');
+      debugPrint('db is not null');
       return;
     } else {
       try {
@@ -29,27 +30,27 @@ class DbServices {
             );
           },
         );
-        print('Done DB.init() Successfully');
+        debugPrint('Done DB.init() Successfully');
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
-      print('DB is : $db');
+      debugPrint('DB is : $db');
     }
   }
 
   static Future<int> insert(Task task) async {
-    print('Inserting Task to DataBase');
-    print('DB is : $db');
+    debugPrint('Inserting Task to DataBase');
+    debugPrint('DB is : $db');
     return db!.insert(tabelName, task.toJson());
   }
 
   static Future<int> delete(int id) async {
-    print('Deleting Task from DataBase');
+    debugPrint('Deleting Task from DataBase');
     return db!.delete(tabelName, where: 'id = ?', whereArgs: [id]);
   }
 
   static Future<int> update(Task task) async {
-    print('Updating Task in DataBase');
+    debugPrint('Updating Task in DataBase');
     return db!.update(
       tabelName,
       task.toJson(),
@@ -60,7 +61,7 @@ class DbServices {
   }
 
   static Future<int> complete(Task task) async {
-    print('Completing Task in DataBase');
+    debugPrint('Completing Task in DataBase');
     return db!.rawUpdate(
       '''
     UPDATE $tabelName
@@ -75,7 +76,7 @@ class DbServices {
   }
 
   static Future<List<Map<String, dynamic>>> query() async {
-    print('Querying about DataBase');
+    debugPrint('Querying about DataBase');
     return db!.query(tabelName);
   }
 }

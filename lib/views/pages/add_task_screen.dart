@@ -210,7 +210,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         remind: selectedRemind,
         repeat: selectedRepeat,
       ));
-      print(value);
+      debugPrint(value.toString());
 
       String day = selectedDate.toString().split(' ')[0];
       selectedDate = DateTime.parse(day);
@@ -231,10 +231,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       //     id: value, title: titleController.text, duration: difference)
       // : null;
 
-      NotificationService().scheduledNotification(
-        int.parse(hour),
-        int.parse(minutes),
-        Task(
+      NotifyHelper().scheduledNotification(
+        hour: int.parse(hour),
+        minutes: int.parse(minutes),
+        task: Task(
           id: value,
           color: selectedColor,
           isCompleted: 0,
@@ -248,7 +248,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

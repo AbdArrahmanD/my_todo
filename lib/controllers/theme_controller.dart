@@ -6,7 +6,7 @@ class ThemeController extends GetxController {
   GetStorage box = GetStorage();
   final key = 'isDarkMode';
   bool loadTheme() {
-    print('loadTheme : ${box.read<bool>(key)}');
+    debugPrint('loadTheme : ${box.read<bool>(key)}');
     return box.read<bool>(key) ?? false;
   }
 

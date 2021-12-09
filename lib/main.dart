@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import 'controllers/theme_controller.dart';
 import 'db/db_services.dart';
@@ -10,8 +11,8 @@ import 'views/pages/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  NotificationService().initNotification();
-  NotificationService().requestIOSPermissions();
+  NotifyHelper().initializeNotification();
+  NotifyHelper().requestIOSPermissions();
   await DbServices.init();
   await GetStorage.init();
   runApp(MyApp());

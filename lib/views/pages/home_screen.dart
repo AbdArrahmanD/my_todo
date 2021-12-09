@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tz;
+
 import '../../controllers/task_controller.dart';
 import '../../main.dart';
 import '../../models/size_config.dart';
@@ -24,7 +25,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    tz.initializeTimeZones();
     taskController.getTask();
     debugPrint('initState');
     super.initState();
@@ -120,14 +120,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         // var date = DateFormat('yMd').parse(task.date);
                         // print(task.date);
                         // print('${task.title} ParsedDate is $myDate');
+                        // String myTime = task.startTime.split(' ')[0];
                         // String myTime = DateFormat('HH:mm').format(date);
                         // String hour = myTime.split(':')[0];
                         // String minutes = myTime.split(':')[1];
-
-                        // NotificationService().setNotification(
-                        //     hour: int.parse(hour),
-                        //     minutes: int.parse(minutes),
-                        //     task: task);
+                        // date = date.add(Duration(
+                        //   hours: int.parse(hour),
+                        //   minutes: int.parse(minutes),
+                        // ));
+                        // debugPrint(
+                        // 'Day : $date\nHour : ${int.parse(hour)}\nMin : ${int.parse(minutes)}');
 
                         if (task.repeat == 'Daily' ||
                             task.date == DateFormat.yMd().format(selecedDate)) {
