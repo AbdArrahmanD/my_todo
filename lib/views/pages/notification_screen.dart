@@ -11,6 +11,8 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppBar appbar = AppBar(
+      elevation: 0,
+      backgroundColor: getColor(lightColor: white, darkColor: Colors.black),
       centerTitle: true,
       title: Text(payLoad.split('|')[0]),
       leading: IconButton(

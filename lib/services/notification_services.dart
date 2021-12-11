@@ -207,7 +207,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -275,6 +275,10 @@ class NotifyHelper {
     );
   }
 
+  cancelNotification({required int id}) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
   scheduledNotification(
       {required int hour, required int minutes, required Task task}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -282,7 +286,13 @@ class NotifyHelper {
       task.title,
       task.note,
       //tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-      _nextInstanceOfTenAM(hour, minutes),
+      _nextInstanceOfTenAM(
+        hour: hour,
+        minutes: minutes,
+        remind: task.remind,
+        repeat: task.repeat,
+        date: task.date,
+      ),
       const NotificationDetails(
         android: AndroidNotificationDetails('main_channel', 'Main Channel',
             channelDescription: 'Main channel notifications',
@@ -304,16 +314,47 @@ class NotifyHelper {
     );
   }
 
-  tz.TZDateTime _nextInstanceOfTenAM(int hour, int minutes) {
+  tz.TZDateTime _nextInstanceOfTenAM({
+    required int hour,
+    required int minutes,
+    required int remind,
+    required String repeat,
+    required String date,
+  }) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     debugPrint('tz.Local in nextInstanceOfTenAM : ${tz.local}');
     debugPrint('now : $now');
+    DateTime formattedDate = DateFormat.yMd().parse(date);
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minutes);
+    scheduledDate = remindCalculator(remind, scheduledDate);
     if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
+      if (repeat == 'Daily' || repeat == 'None')
+        scheduledDate = tz.TZDateTime(tz.local, now.year, now.month,
+            formattedDate.add(const Duration(days: 1)).day, hour, minutes);
+      else if (repeat == 'Weekly') {
+        scheduledDate = tz.TZDateTime(tz.local, now.year, now.month,
+            formattedDate.add(const Duration(days: 7)).day, hour, minutes);
+      } else if (repeat == 'Monthly') {
+        scheduledDate = tz.TZDateTime(tz.local, now.year,
+            (formattedDate.month + 1), formattedDate.day, hour, minutes);
+      }
+      scheduledDate = remindCalculator(remind, scheduledDate);
     }
+
     debugPrint('ScheduledDate : $scheduledDate');
+    return scheduledDate;
+  }
+
+  tz.TZDateTime remindCalculator(int remind, tz.TZDateTime scheduledDate) {
+    if (remind == 5)
+      scheduledDate = scheduledDate.subtract(const Duration(minutes: 5));
+    else if (remind == 10)
+      scheduledDate = scheduledDate.subtract(const Duration(minutes: 10));
+    else if (remind == 15)
+      scheduledDate = scheduledDate.subtract(const Duration(minutes: 15));
+    else if (remind == 20)
+      scheduledDate = scheduledDate.subtract(const Duration(minutes: 20));
     return scheduledDate;
   }
 

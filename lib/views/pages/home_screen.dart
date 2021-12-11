@@ -4,7 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:my_todo/services/notification_services.dart';
 
 import '../../controllers/task_controller.dart';
 import '../../main.dart';
@@ -116,23 +116,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         Task task = taskController.tasksList[index];
 
-                        // DateTime myDate = DateTime.parse(task.date);
-                        // var date = DateFormat('yMd').parse(task.date);
-                        // print(task.date);
-                        // print('${task.title} ParsedDate is $myDate');
-                        // String myTime = task.startTime.split(' ')[0];
-                        // String myTime = DateFormat('HH:mm').format(date);
-                        // String hour = myTime.split(':')[0];
-                        // String minutes = myTime.split(':')[1];
-                        // date = date.add(Duration(
-                        //   hours: int.parse(hour),
-                        //   minutes: int.parse(minutes),
-                        // ));
-                        // debugPrint(
-                        // 'Day : $date\nHour : ${int.parse(hour)}\nMin : ${int.parse(minutes)}');
-
                         if (task.repeat == 'Daily' ||
-                            task.date == DateFormat.yMd().format(selecedDate)) {
+                            task.date == DateFormat.yMd().format(selecedDate) ||
+                            (task.repeat == 'Weekly' &&
+                                selecedDate
+                                            .difference(DateFormat.yMd()
+                                                .parse(task.date))
+                                            .inDays %
+                                        7 ==
+                                    0) ||
+                            (task.repeat == 'Monthly' &&
+                                selecedDate.day ==
+                                    DateFormat.yMd().parse(task.date).day)) {
                           return AnimationConfiguration.staggeredList(
                             duration: const Duration(milliseconds: 400),
                             position: index,
@@ -239,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         label: 'Delete',
                         onTap: () {
                           taskController.deleteTask(id: task.id!);
-
+                          NotifyHelper().cancelNotification(id: task.id!);
                           Get.back();
                         },
                         color: Colors.red),
