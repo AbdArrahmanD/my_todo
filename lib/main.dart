@@ -50,7 +50,10 @@ class MyApp extends StatelessWidget {
                           : Colors.black,
                     ),
                   ),
-                  onPressed: () => taskController.deleteAllTask(),
+                  onPressed: () {
+                    taskController.deleteAllTask();
+                    NotifyHelper().cancelAllNotification();
+                  },
                 )
               : Container(),
           const Padding(

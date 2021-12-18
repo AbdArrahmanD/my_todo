@@ -279,6 +279,10 @@ class NotifyHelper {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
+  cancelAllNotification() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   scheduledNotification(
       {required int hour, required int minutes, required Task task}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -325,9 +329,12 @@ class NotifyHelper {
     debugPrint('tz.Local in nextInstanceOfTenAM : ${tz.local}');
     debugPrint('now : $now');
     DateTime formattedDate = DateFormat.yMd().parse(date);
+    tz.TZDateTime fd = tz.TZDateTime.from(formattedDate, tz.local);
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minutes);
+        tz.TZDateTime(tz.local, fd.year, fd.month, fd.day, hour, minutes);
+
     scheduledDate = remindCalculator(remind, scheduledDate);
+
     if (scheduledDate.isBefore(now)) {
       if (repeat == 'Daily' || repeat == 'None')
         scheduledDate = tz.TZDateTime(tz.local, now.year, now.month,

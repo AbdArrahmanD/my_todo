@@ -148,11 +148,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           );
-                        } else if (taskController.tasksList.isEmpty) {
-                          return noTaskYet();
                         } else {
-                          return Container();
+                          return noTaskYet();
                         }
+                        // } else if (taskController.tasksList.isEmpty) {
+                        //   return noTaskYet();
+                        // } else {
+                        //   return Container();
+                        // }
                       }),
                 )),
     );
@@ -162,29 +165,31 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: RefreshIndicator(
           onRefresh: refresh,
-          child: SingleChildScrollView(
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              direction: SizeConfig.orientation == Orientation.portrait
-                  ? Axis.vertical
-                  : Axis.horizontal,
-              children: [
-                SizedBox(height: SizeConfig.screenHeight / 5),
-                SvgPicture.asset(
-                  'assets/images/task.svg',
-                  height: SizeConfig.screenHeight / 7,
-                  color: primaryClr,
-                ),
-                SizeConfig.orientation == Orientation.portrait
-                    ? SizedBox(height: SizeConfig.screenHeight / 17)
-                    : SizedBox(width: SizeConfig.screenHeight / 17),
-                Text(
-                  'You Don\'t Have Any Task Yet!\nAdd new Task to make your day Productive',
-                  style: subTitleStyle(),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+          child: Center(
+            child: SingleChildScrollView(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                direction: SizeConfig.orientation == Orientation.portrait
+                    ? Axis.vertical
+                    : Axis.horizontal,
+                children: [
+                  SizedBox(height: SizeConfig.screenHeight / 5),
+                  SvgPicture.asset(
+                    'assets/images/task.svg',
+                    height: SizeConfig.screenHeight / 7,
+                    color: primaryClr,
+                  ),
+                  SizeConfig.orientation == Orientation.portrait
+                      ? SizedBox(height: SizeConfig.screenHeight / 17)
+                      : SizedBox(width: SizeConfig.screenHeight / 17),
+                  Text(
+                    'You Don\'t Have Any Task Yet!\nAdd new Task to make your day Productive',
+                    style: subTitleStyle(),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
