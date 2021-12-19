@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
           icon: n == 0
               ? Obx(
                   () => Icon(
-                    Icons.dark_mode,
+                    Icons.wb_sunny_outlined,
                     color: themeController.theme.value == ThemeMode.dark
                         ? Colors.white
                         : Colors.black,
