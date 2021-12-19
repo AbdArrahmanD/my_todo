@@ -4,13 +4,13 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:my_todo/services/notification_services.dart';
 
 import '../../controllers/task_controller.dart';
 import '../../main.dart';
 import '../../models/size_config.dart';
 import '../../models/task.dart';
 import '../../models/themes.dart';
+import '../../services/notification_services.dart';
 import '../widgets/button.dart';
 import '../widgets/task_tile.dart';
 import 'add_task_screen.dart';
@@ -115,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               : Axis.vertical,
                       itemBuilder: (context, index) {
                         Task task = taskController.tasksList[index];
-
                         if (task.repeat == 'Daily' ||
                             task.date == DateFormat.yMd().format(selecedDate) ||
                             (task.repeat == 'Weekly' &&
@@ -149,13 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         } else {
-                          return noTaskYet();
+                          return Container();
                         }
-                        // } else if (taskController.tasksList.isEmpty) {
-                        //   return noTaskYet();
-                        // } else {
-                        //   return Container();
-                        // }
                       }),
                 )),
     );
