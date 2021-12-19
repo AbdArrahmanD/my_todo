@@ -101,9 +101,13 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Obx showTasks() {
+    List selectedList = [];
+    Iterable<Task> tasks = taskController.tasksList
+        .where((task) => task.date == DateFormat.yMd().format(selecedDate));
+    selectedList.addAll(tasks);
     return Obx(
       () => Expanded(
-          child: taskController.tasksList.isEmpty
+          child: taskController.tasksList.isEmpty || selectedList.isEmpty
               ? noTaskYet()
               : RefreshIndicator(
                   onRefresh: refresh,
@@ -159,31 +163,29 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: RefreshIndicator(
           onRefresh: refresh,
-          child: Center(
-            child: SingleChildScrollView(
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                direction: SizeConfig.orientation == Orientation.portrait
-                    ? Axis.vertical
-                    : Axis.horizontal,
-                children: [
-                  SizedBox(height: SizeConfig.screenHeight / 5),
-                  SvgPicture.asset(
-                    'assets/images/task.svg',
-                    height: SizeConfig.screenHeight / 7,
-                    color: primaryClr,
-                  ),
-                  SizeConfig.orientation == Orientation.portrait
-                      ? SizedBox(height: SizeConfig.screenHeight / 17)
-                      : SizedBox(width: SizeConfig.screenHeight / 17),
-                  Text(
-                    'You Don\'t Have Any Task Yet!\nAdd new Task to make your day Productive',
-                    style: subTitleStyle(),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+          child: SingleChildScrollView(
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              direction: SizeConfig.orientation == Orientation.portrait
+                  ? Axis.vertical
+                  : Axis.horizontal,
+              children: [
+                SizedBox(height: SizeConfig.screenHeight / 5),
+                SvgPicture.asset(
+                  'assets/images/task.svg',
+                  height: SizeConfig.screenHeight / 7,
+                  color: primaryClr,
+                ),
+                SizeConfig.orientation == Orientation.portrait
+                    ? SizedBox(height: SizeConfig.screenHeight / 17)
+                    : SizedBox(width: SizeConfig.screenHeight / 17),
+                Text(
+                  'You Don\'t Have Any Task Yet!\nAdd new Task to make your day Productive',
+                  style: subTitleStyle(),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ),
