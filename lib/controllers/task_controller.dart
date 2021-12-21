@@ -6,6 +6,17 @@ import '../models/task.dart';
 class TaskController extends GetxController {
   RxList<Task> tasksList = <Task>[].obs;
 
+  // tasksHelper(DateTime selectedDate) {
+  //   debugPrint('tasksList : $tasksList');
+  //   debugPrint('selectedList 1 : ${HomeScreen.selectedList}');
+  //   Iterable<Task> tasks = tasksList
+  //       .where((task) => task.date == DateFormat.yMd().format(selectedDate));
+  //   HomeScreen.selectedList.contains(tasks)
+  //       ? null
+  //       : HomeScreen.selectedList.addAll(tasks);
+  //   debugPrint('selectedList 2 : ${HomeScreen.selectedList}');
+  // }
+
   getTask() async {
     final List<Map<String, dynamic>> tasks = await DbServices.query();
     tasksList.assignAll(tasks.map((e) => Task.fromJson(e)).toList());

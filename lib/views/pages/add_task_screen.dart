@@ -44,6 +44,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: MyApp().appBar(context, 1, title: 'Add New Task'),
       body: SafeArea(
         child: Container(
@@ -52,6 +53,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             vertical: 12,
           ),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 InputField(
@@ -198,20 +200,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   addTasktoDb() async {
     try {
-      int? value = await taskController.insertTask(
-          task: Task(
-        color: selectedColor,
-        isCompleted: 0,
-        title: titleController.text,
-        note: noteController.text,
-        startTime: startTime,
-        endTime: endTime,
-        date: DateFormat.yMd().format(selectedDate),
-        remind: selectedRemind,
-        repeat: selectedRepeat,
-      ));
-      debugPrint(value.toString());
-
       String day = selectedDate.toString().split(' ')[0];
       selectedDate = DateTime.parse(day);
       startTime = startTime.split(' ')[0];
@@ -223,30 +211,48 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         minutes: int.parse(minutes),
       ));
 
-      Duration difference = selectedDate.difference(DateTime.now());
-      debugPrint(
-          'Day : $selectedDate\nHour : ${int.parse(hour)}\nMin : ${int.parse(minutes)}\nSet Notification After $difference');
+      // Duration difference = selectedDate.difference(DateTime.now());
+      // debugPrint(
+      //     'Day : $selectedDate\nHour : ${int.parse(hour)}\nMin : ${int.parse(minutes)}\nSet Notification After $difference');
+      int? value = await taskController
+          .insertTask(
+              task: Task(
+        color: selectedColor,
+        isCompleted: 0,
+        title: titleController.text,
+        note: noteController.text,
+        startTime: startTime,
+        endTime: endTime,
+        date: DateFormat.yMd().format(selectedDate),
+        remind: selectedRemind,
+        repeat: selectedRepeat,
+      ))
+          .then((value) {
+        NotifyHelper().scheduledNotification(
+          hour: int.parse(hour),
+          minutes: int.parse(minutes),
+          task: Task(
+            id: value,
+            color: selectedColor,
+            isCompleted: 0,
+            title: titleController.text,
+            note: noteController.text,
+            startTime: startTime,
+            endTime: endTime,
+            date: DateFormat.yMd().format(selectedDate),
+            remind: selectedRemind,
+            repeat: selectedRepeat,
+          ),
+        );
+      });
+
       // !difference.isNegative
       // ? NotificationService().setNotificationAfterDuration(
       //     id: value, title: titleController.text, duration: difference)
       // : null;
 
-      NotifyHelper().scheduledNotification(
-        hour: int.parse(hour),
-        minutes: int.parse(minutes),
-        task: Task(
-          id: value,
-          color: selectedColor,
-          isCompleted: 0,
-          title: titleController.text,
-          note: noteController.text,
-          startTime: startTime,
-          endTime: endTime,
-          date: DateFormat.yMd().format(selectedDate),
-          remind: selectedRemind,
-          repeat: selectedRepeat,
-        ),
-      );
+      // ignore: unnecessary_null_comparison
+
     } catch (e) {
       debugPrint(e.toString());
     }

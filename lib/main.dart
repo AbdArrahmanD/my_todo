@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:my_todo/controllers/task_controller.dart';
 
+import 'controllers/task_controller.dart';
 import 'controllers/theme_controller.dart';
 import 'db/db_services.dart';
 import 'models/themes.dart';
@@ -53,15 +53,17 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     taskController.deleteAllTask();
                     NotifyHelper().cancelAllNotification();
+                    // HomeScreen.selectedList.clear();
+                    // debugPrint('selectedList : ${HomeScreen.selectedList}');
                   },
                 )
               : Container(),
           const Padding(
-            padding: EdgeInsets.only(right: 7),
+            padding: EdgeInsets.only(right: 7, left: 3),
             child: CircleAvatar(
               backgroundImage: AssetImage('assets/images/person.jpeg'),
             ),
-          )
+          ),
         ],
         elevation: 0,
         backgroundColor: Theme.of(context).backgroundColor,

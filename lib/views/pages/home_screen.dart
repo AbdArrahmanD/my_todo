@@ -16,6 +16,7 @@ import '../widgets/task_tile.dart';
 import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  // static List selectedList = [];
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -23,6 +24,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // @override
+  // void didChangeDependencies() {
+  //   taskController.getTask();
+  //   // taskController.tasksHelper(selectedDate);
+  //   debugPrint('didChangeDependencies');
+  //   super.didChangeDependencies();
+  // }
+
   @override
   void initState() {
     taskController.getTask();
@@ -31,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   TaskController taskController = Get.put(TaskController());
-  DateTime selecedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  DateFormat.yMMMMd().format(DateTime.now()),
-                  style: subHeadingStyle(),
-                ),
-                Text(
                   'Today',
                   style: headingStyle(),
+                ),
+                Text(
+                  DateFormat.yMMMMd().format(DateTime.now()),
+                  style: subHeadingStyle(),
                 ),
               ],
             ),
@@ -94,20 +103,19 @@ class _HomeScreenState extends State<HomeScreen> {
               size: 12, color: Colors.grey, fontWeight: FontWeight.w600),
           onDateChange: (newDate) {
             setState(() {
-              selecedDate = newDate;
+              selectedDate = newDate;
             });
           },
         ),
       );
 
-  Obx showTasks() {
-    List selectedList = [];
-    Iterable<Task> tasks = taskController.tasksList
-        .where((task) => task.date == DateFormat.yMd().format(selecedDate));
-    selectedList.addAll(tasks);
+  showTasks() {
+    // taskController.tasksHelper(selectedDate);
+    // debugPrint('tasksList 10 : ${taskController.tasksList}');
     return Obx(
       () => Expanded(
-          child: taskController.tasksList.isEmpty || selectedList.isEmpty
+          // child: taskController.tasksList.isEmpty || HomeScreen.selectedList.isEmpty
+          child: taskController.tasksList.isEmpty
               ? noTaskYet()
               : RefreshIndicator(
                   onRefresh: refresh,
@@ -119,18 +127,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               : Axis.vertical,
                       itemBuilder: (context, index) {
                         Task task = taskController.tasksList[index];
+
                         if (task.repeat == 'Daily' ||
-                            task.date == DateFormat.yMd().format(selecedDate) ||
+                            task.date ==
+                                DateFormat.yMd().format(selectedDate) ||
                             (task.repeat == 'Weekly' &&
-                                selecedDate
+                                selectedDate
                                             .difference(DateFormat.yMd()
                                                 .parse(task.date))
                                             .inDays %
                                         7 ==
                                     0) ||
                             (task.repeat == 'Monthly' &&
-                                selecedDate.day ==
+                                selectedDate.day ==
                                     DateFormat.yMd().parse(task.date).day)) {
+                          debugPrint('in builder');
                           return AnimationConfiguration.staggeredList(
                             duration: const Duration(milliseconds: 400),
                             position: index,
@@ -159,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Container noTaskYet() => Container(
+  Widget noTaskYet() => Container(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: RefreshIndicator(
           onRefresh: refresh,
@@ -194,9 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
   showButtomSheet(Task task, Color tileColor) => Get.bottomSheet(Container(
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         width: SizeConfig.screenWidth,
-        height: SizeConfig.orientation == Orientation.portrait
-            ? SizeConfig.screenHeight * 0.35
-            : SizeConfig.screenHeight * 0.9,
+        height: SizeConfig.orientation == Orientation.portrait ? 270 : 370,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: tileColor.withOpacity(0.8),
@@ -242,7 +251,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       child: const Divider(
-                        color: white,
+                        color: Colors.grey,
+                        thickness: 1,
                       ),
                     ),
                     modelSheetButton(
