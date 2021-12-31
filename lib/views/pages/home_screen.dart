@@ -16,7 +16,6 @@ import '../widgets/task_tile.dart';
 import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  // static List selectedList = [];
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -34,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    taskController.getTask();
+    taskController.getTask(selectedDate: selectedDate);
     debugPrint('initState');
     super.initState();
   }
@@ -79,8 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
             MyButton(
                 label: '+ Add Task',
                 onTap: () async {
-                  await Get.to(() => const AddTaskScreen());
-                  taskController.getTask();
+                  await Get.to(() => AddTaskScreen(selectedDate));
+                  taskController.getTask(selectedDate: selectedDate);
                 })
           ],
         ),
@@ -104,18 +103,21 @@ class _HomeScreenState extends State<HomeScreen> {
           onDateChange: (newDate) {
             setState(() {
               selectedDate = newDate;
+              taskController.getTask(selectedDate: selectedDate);
+              // taskController.clearListHelper();
             });
           },
         ),
       );
 
   showTasks() {
-    // taskController.tasksHelper(selectedDate);
-    // debugPrint('tasksList 10 : ${taskController.tasksList}');
+    // taskController.clearListHelper();
+    // taskController.checkListHelper(selectedDate);
+
     return Obx(
       () => Expanded(
-          // child: taskController.tasksList.isEmpty || HomeScreen.selectedList.isEmpty
-          child: taskController.tasksList.isEmpty
+          child: taskController.tasksList.isEmpty ||
+                  taskController.listHelper.isEmpty
               ? noTaskYet()
               : RefreshIndicator(
                   onRefresh: refresh,
@@ -294,6 +296,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Future<void> refresh() async {
-    await taskController.getTask();
+    await taskController.getTask(selectedDate: selectedDate);
   }
 }

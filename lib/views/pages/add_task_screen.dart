@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:my_todo/controllers/task_controller.dart';
 import 'package:my_todo/models/task.dart';
 import 'package:my_todo/services/notification_services.dart';
+import 'package:my_todo/views/pages/home_screen.dart';
 
 import '../../main.dart';
 import '../../models/themes.dart';
@@ -11,7 +12,8 @@ import '../widgets/button.dart';
 import '../widgets/input_field.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+  final DateTime oldDate;
+  const AddTaskScreen(this.oldDate, {Key? key}) : super(key: key);
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -244,6 +246,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             repeat: selectedRepeat,
           ),
         );
+        debugPrint('task is ready');
+        // taskController.clearListHelper();
+        // taskController.checkListHelper(widget.oldDate);
       });
 
       // !difference.isNegative
