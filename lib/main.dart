@@ -53,8 +53,6 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     taskController.deleteAllTask();
                     NotifyHelper().cancelAllNotification();
-                    // HomeScreen.selectedList.clear();
-                    // debugPrint('selectedList : ${HomeScreen.selectedList}');
                   },
                 )
               : Container(),

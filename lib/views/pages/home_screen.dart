@@ -23,14 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // @override
-  // void didChangeDependencies() {
-  //   taskController.getTask();
-  //   // taskController.tasksHelper(selectedDate);
-  //   debugPrint('didChangeDependencies');
-  //   super.didChangeDependencies();
-  // }
-
   @override
   void initState() {
     taskController.getTask(selectedDate: selectedDate);
@@ -104,16 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               selectedDate = newDate;
               taskController.getTask(selectedDate: selectedDate);
-              // taskController.clearListHelper();
             });
           },
         ),
       );
 
   showTasks() {
-    // taskController.clearListHelper();
-    // taskController.checkListHelper(selectedDate);
-
     return Obx(
       () => Expanded(
           child: taskController.tasksList.isEmpty ||

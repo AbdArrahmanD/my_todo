@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:my_todo/controllers/task_controller.dart';
-import 'package:my_todo/models/task.dart';
-import 'package:my_todo/services/notification_services.dart';
-import 'package:my_todo/views/pages/home_screen.dart';
 
+import '../../controllers/task_controller.dart';
 import '../../main.dart';
+import '../../models/task.dart';
 import '../../models/themes.dart';
+import '../../services/notification_services.dart';
 import '../widgets/button.dart';
 import '../widgets/input_field.dart';
 
@@ -213,10 +212,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         minutes: int.parse(minutes),
       ));
 
-      // Duration difference = selectedDate.difference(DateTime.now());
-      // debugPrint(
-      //     'Day : $selectedDate\nHour : ${int.parse(hour)}\nMin : ${int.parse(minutes)}\nSet Notification After $difference');
-      int? value = await taskController
+      await taskController
           .insertTask(
               task: Task(
         color: selectedColor,
@@ -247,17 +243,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           ),
         );
         debugPrint('task is ready');
-        // taskController.clearListHelper();
-        // taskController.checkListHelper(widget.oldDate);
       });
-
-      // !difference.isNegative
-      // ? NotificationService().setNotificationAfterDuration(
-      //     id: value, title: titleController.text, duration: difference)
-      // : null;
-
-      // ignore: unnecessary_null_comparison
-
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -322,7 +308,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       setState(() {
         isStartTime ? startTime = formattedTime : endTime = formattedTime;
       });
-      // print('SelectedTime is : $pickedTime');
     }
   }
 }

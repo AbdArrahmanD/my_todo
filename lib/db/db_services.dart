@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:my_todo/models/task.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
+import '../models/task.dart';
 
 class DbServices {
   static String tabelName = 'tasks';
